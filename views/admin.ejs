@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Database Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-light: #e0e7ff;
+      --secondary: #3f37c9;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f5f9;
+      color: var(--dark);
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 900px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      margin-top: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      font-size: 1.75rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      padding: 0.80rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    /* Form */
+    .form-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-group {
+        flex-direction: column;
+      }
+    }
+
+    .form-control {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a56d4;
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-warning {
+      background-color: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background-color: #d97706;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-icon {
+      font-size: 0.8rem;
+    }
+
+    /* Alert */
+    .alert {
+      padding: 0.9rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: #ecfdf5;
+      color: var(--success);
+      border-left: 4px solid var(--success);
+      font-size: 0.95rem;
+    }
+
+    .alert-icon {
+      font-size: 1.1rem;
+    }
+
+    /* Search */
+    .search-box {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem 0.7rem 2.5rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    /* Table */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-light);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .table th {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-weight: 500;
+      padding: 0.8rem;
+      text-align: center;
+    }
+
+    .table td {
+      padding: 0.8rem;
+      border-bottom: 1px solid var(--gray-light);
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .status-active {
+      background-color: #d1fae5;
+      color: var(--success);
+    }
+
+    .status-blacklist {
+      background-color: #fee2e2;
+      color: var(--danger);
+    }
+
+    .status-pending {
+      background-color: #fef3c7;
+      color: var(--warning);
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Admin Links */
+    .admin-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .admin-link:hover {
+      background-color: var(--primary-light);
+    }
+
+    .admin-link i {
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-database"></i>
+        </div>
+        <div class="logo-text" id="title">Xskycode Database</div>
+      </div>
+      <p class="page-description">Administration panel for managing numbers</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value"><%= data.length %></div>
+        <div class="stat-label">Total Numbers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= data.filter(item => item.status === 'active').length %></div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= data.filter(item => item.status === 'blacklist').length %></div>
+        <div class="stat-label">Blacklisted</div>
+      </div>
+    </div>
+    
+    <!-- Add Number Form -->
+    <form action="/admin-add" method="POST">
+      <div class="form-group">
+        <input type="text" name="number" class="form-control" placeholder="Enter phone number" required />
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-plus btn-icon"></i>
+          Add Number
+        </button>
+      </div>
+    </form>
+    
+    <% if (message) { %>
+      <div class="alert">
+        <i class="fas fa-check-circle alert-icon"></i>
+        <%= message %>
+      </div>
+    <% } %>
+    
+    <!-- Search and Table -->
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search numbers..." onkeyup="filterTable()" />
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table" id="numberTable">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach(item => { %>
+            <tr>
+              <td><%= item.number %></td>
+              <td>
+                <span class="status status-<%= item.status %>">
+                  <%= item.status %>
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <form action="/delete" method="POST" style="display:inline;">
+                    <input type="hidden" name="number" value="<%= item.number %>" />
+                    <button class="btn btn-danger btn-sm" type="submit">
+                      <i class="fas fa-trash btn-icon"></i> Delete
+                    </button>
+                  </form>
+                  <% if (item.status === 'active') { %>
+                  <form action="/blacklist" method="POST" style="display:inline;">
+                    <input type="hidden" name="number" value="<%= item.number %>" />
+                    <button class="btn btn-warning btn-sm" type="submit">
+                      <i class="fas fa-ban btn-icon"></i> Block
+                    </button>
+                  </form>
+                  <% } %>
+                  <% if (item.status === 'blacklist') { %>
+                  <form action="/whitelist" method="POST" style="display:inline;">
+                    <input type="hidden" name="number" value="<%= item.number %>" />
+                    <button class="btn btn-primary btn-sm" type="submit">
+                      <i class="fas fa-check-circle btn-icon"></i> Unblock
+                    </button>
+                  </form>
+                  <% } %>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    
+    <footer class="footer">
+      <a id="contact" href="https://wa.me/6283181145670" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact Developer
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    const setContent = (id, prop, val) => {
+      const el = document.getElementById(id);
+      if (el) el[prop] = val;
+    };
+    
+    (async () => {
+      settings = await fetch("/set").then(res => res.json());
+      setContent("title", "textContent", settings.api_title);
+      setContent("contact", "href", settings.contact_whatsapp);
+    })()
+    
+    function filterTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("numberTable");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < rows.length; i++) {
+        const td = rows[i].getElementsByTagName("td")[0];
+        if (td) {
+          const txtValue = td.textContent || td.innerText;
+          rows[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+        }
+      }
+    }
+    
+    window.addEventListener("DOMContentLoaded", () => {
+      const alertEl = document.querySelector(".alert");
+      if (alertEl) {
+        setTimeout(() => {
+          alertEl.style.transition = "opacity 0.5s ease-out";
+          alertEl.style.opacity = "0";
+          setTimeout(() => alertEl.remove(), 500);
+        }, 7000);
+      }
+    });
+  </script>
+</body>
+</html>

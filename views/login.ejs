@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Database</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-light: #e0e7ff;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .login-container {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-icon {
+      font-size: 1.75rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .login-form {
+      margin-top: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: var(--gray);
+      font-size: 1rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      color: var(--gray);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a56d4;
+    }
+
+    .alert {
+      padding: 0.9rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: #fee2e2;
+      color: var(--danger);
+      border-left: 4px solid var(--danger);
+      font-size: 0.95rem;
+    }
+
+    .alert-icon {
+      font-size: 1.1rem;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="logo-text" id="title">Xskycode Database</div>
+    </div>
+
+    <% if (message) { %>
+      <div class="alert">
+        <i class="fas fa-exclamation-circle alert-icon"></i>
+        <%= message %>
+      </div>
+    <% } %>
+
+    <form class="login-form" method="POST" action="/login">
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="password-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+          <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i>
+        Login
+      </button>
+    </form>
+
+    <div class="footer">
+      <a id="contact" href="#" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact Support
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    
+    togglePassword.addEventListener('click', function() {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+
+    // Auto-dismiss alert
+    window.addEventListener("DOMContentLoaded", () => {
+      const alertEl = document.querySelector(".alert");
+      if (alertEl) {
+        setTimeout(() => {
+          alertEl.style.transition = "opacity 0.5s ease-out";
+          alertEl.style.opacity = "0";
+          setTimeout(() => alertEl.remove(), 500);
+        }, 5000);
+      }
+    });
+
+    // Set dynamic content like dashboard
+    const setContent = (id, prop, val) => {
+      const el = document.getElementById(id);
+      if (el) el[prop] = val;
+    };
+    
+    (async () => {
+      try {
+        const settings = await fetch("/set").then(res => res.json());
+        setContent("title", "textContent", settings.api_title || "Xskycode Database");
+        setContent("contact", "href", settings.contact_whatsapp || "https://wa.me/6283181145670");
+      } catch (error) {
+        console.error("Error loading settings:", error);
+        // Set default values if fetch fails
+        setContent("title", "textContent", "Xskycode Database");
+        setContent("contact", "href", "https://wa.me/6283181145670");
+      }
+    })();
+  </script>
+</body>
+</html>

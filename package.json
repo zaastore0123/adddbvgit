@@ -1,0 +1,18 @@
+{
+  "name": "whatsapp-number-manager",
+  "version": "1.0.0",
+  "description": "A simple Express.js app to manage WhatsApp numbers from a GitHub JSON file",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "express-session": "^1.18.1",
+    "node-fetch": "^2.6.11", 
+    "path": "^0.12.7"
+  }
+}
